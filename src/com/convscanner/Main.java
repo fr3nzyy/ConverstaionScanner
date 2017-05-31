@@ -6,26 +6,34 @@ import java.util.regex.Pattern;
 public class Main {
 
     public static void main(String[] args) {
-        String nickName = "Aleksey Zhukov";
-        messegeScanner("Aleksey Zhukov, [26.03.17 20:52] " +
-        "Привет, да у меня всё нормально, неделя немного утомительная была, много чего по работе надо было делать" +
-        " Aleksey Zhukov, [26.03.17 20:52] " +
-        "Как-нибудь к тебе заеду Aleksey Zhukov", nickName);
+        String nickName1 = "Aleksey Zhukov";
+        String nickName2 = "Дениз";
+        String message = "Aleksey Zhukov, [31.05.17 20:26]\n" +
+                "только балконные\n" +
+                "\n" +
+                "Дениз, [31.05.17 20:26]\n" +
+                "Ааа\n" +
+                "\n" +
+                "Дениз, [31.05.17 20:26]\n" +
+                "Поняла\n" +
+                "\n" +
+                "Aleksey Zhukov, [31.05.17 20:26]\n" +
+                "в плане они на кухню занесли)\n" +
+                "\n" +
+                "Дениз, [31.05.17 20:26]\n" +
+                "Надеюсь я завтра не буду трупом";
+        messegeScanner(message, nickName1, nickName2);
     }
 
-    public static boolean test(String testString) {
-        Pattern p = Pattern.compile(".+|^(Aleksey Zhukov, \\[).+");
-        Matcher m = p.matcher(testString);
-        return m.matches();
-    }
-
-    public static void messegeScanner(String message, String nickName) {
-        Pattern p = Pattern.compile("(Aleksey Zhukov).+(\\1)");
+    public static void messegeScanner(String message, String nickName1, String nickName2) {
+        String regexp =  "("+nickName1+").{2}\\[.*]" + "(.*)" + "("+nickName2+").{2}\\[.*]";
+        Pattern p = Pattern.compile(regexp, Pattern.DOTALL);
         Matcher m = p.matcher(message);
-        if (m.find()) {
-            //System.out.println((m.group()));
-            System.out.println(m.group().substring(nickName.length()+ 19, m.group().length()- nickName.length()));
+        while (m.find()) {
+                System.out.println((m.group(2)));
+//            System.out.println((m.group(1)));
+//            System.out.println((m.group(2)));
+//            System.out.println((m.group(3)));
         }
-        else System.out.println("error");
     }
 }
